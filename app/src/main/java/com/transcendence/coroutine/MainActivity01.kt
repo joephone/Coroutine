@@ -2,14 +2,15 @@ package com.transcendence.coroutine
 
 import android.os.AsyncTask
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.transcendence.coroutine.api.LoginResponse
+import com.transcendence.coroutine.api.userServiceApi
 
 /**
  * @author joephone
  * @date 2025/6/27 5:56
- * @description
+ * @description  异步任务
  * @edition 1.0
  */
 class MainActivity01 : AppCompatActivity() {
@@ -22,7 +23,7 @@ class MainActivity01 : AppCompatActivity() {
 
         val submit  = findViewById<TextView>(R.id.tv_submit).also {
             it.setOnClickListener {
-                object : AsyncTask<Void,Void,LoginResponse>(){
+                object : AsyncTask<Void,Void, LoginResponse>(){
                     override fun doInBackground(vararg params: Void?): LoginResponse? {
                         //填自己的用户名与密码
                         return userServiceApi.login("","").execute().body()

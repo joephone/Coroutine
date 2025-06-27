@@ -1,6 +1,5 @@
-package com.transcendence.coroutine
+package com.transcendence.coroutine.api
 
-import com.google.gson.GsonBuilder
 import com.transcendence.coroutine.log.LogUtils
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -9,9 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.Query
 
 /**
  * @author joephone
@@ -54,6 +51,13 @@ interface UserServiceApi {
         @Field("username") username: String,
         @Field("password") pwd: String
     ): Call<LoginResponse>
+
+    @FormUrlEncoded
+    @POST("user/login")
+    suspend fun loginSuspend(
+        @Field("username") username: String,
+        @Field("password") pwd: String
+    ): LoginResponse
 }
 
 class LoginResponse {
