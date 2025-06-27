@@ -5,9 +5,11 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.transcendence.coroutine.api.userServiceApi
 import com.transcendence.coroutine.log.LogUtils
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -17,9 +19,9 @@ import kotlinx.coroutines.launch
  * @description  MainScope  生命周期是process级别的，即使Activity或Fragment已经被销毁，协程仍然在执行。
  * @edition 1.0
  */
-class MainActivity06 : AppCompatActivity() {
+class MainActivity06 : AppCompatActivity(),CoroutineScope by MainScope() {
 
-    private val mainScope = MainScope()
+//    private val mainScope = MainScope()
     private var info :TextView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,11 +32,17 @@ class MainActivity06 : AppCompatActivity() {
 
         val submit  = findViewById<TextView>(R.id.tv_submit).also {
             it.setOnClickListener {
-                mainScope.launch {
+                launch {
                     val login = userServiceApi.loginSuspend("","123456")
                     info?.text =" name:${login.data?.username}"
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+//        mainScope.cancel()
+        cancel()
     }
 }
